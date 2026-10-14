@@ -1,0 +1,9 @@
+services:
+  navigation:
+    build: .
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - ./maps:/ros2_ws/maps
+    working_dir: /ros2_ws
+    command: bash -c 'source install/setup.bash && ros2 launch entrega_mapas_package navigation.launch.py'

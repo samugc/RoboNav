@@ -1,0 +1,50 @@
+[
+  {
+    "source": "src/entrega_mapas_package/package.xml",
+    "sha256": "6d2896ca82ed9911959a8eee32fc2bed0de97072941527441867e3a1de241bcb"
+  },
+  {
+    "source": "src/entrega_mapas_package/setup.py",
+    "sha256": "3cd6251c26caecd61d9290bf7ede1e999c1c84f0445c356404aea733ff0d3b2e"
+  },
+  {
+    "source": "src/entrega_mapas_package/setup.cfg",
+    "sha256": "2f0633ab82477dcc25914c9ddf09a4c59c0cf50b731f6200e12136d6cb2d29ec"
+  },
+  {
+    "source": "src/entrega_mapas_package/resource/entrega_mapas_package",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "source": "src/entrega_mapas_package/entrega_mapas_package/goal_manager_node.py",
+    "sha256": "99b9f3e4df58f338d3c8778b9d2438013d57ad3e5afcfa10d7ba1fd7cce22724"
+  },
+  {
+    "source": "src/entrega_mapas_package/entrega_mapas_package/a_star_node.py",
+    "sha256": "5fc889f8a6114204e03e5307688013ce9b00e075269f30a3777bb03cbd8caf73"
+  },
+  {
+    "source": "src/entrega_mapas_package/entrega_mapas_package/__init__.py",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "source": "src/entrega_mapas_package/entrega_mapas_package/dijkstra_node.py",
+    "sha256": "17ba3fe8b000a9c67237d8bf857283d102e251b856021f5a989add5d536e35ea"
+  },
+  {
+    "source": "src/entrega_mapas_package/entrega_mapas_package/bug2_controller_node.py",
+    "sha256": "0988ec8e3b65c472c67ab263b7d5a5d7da36ef0782b04b36f8389c6913f4671f"
+  },
+  {
+    "source": "src/entrega_mapas_package/entrega_mapas_package/occupancy_mapper_node.py",
+    "sha256": "76804479878501b7af961a2803e0f38774fecbdd7ae723ac07f566a6fa4ce29a"
+  },
+  {
+    "source": "src/entrega_mapas_package/entrega_mapas_package/rrt_node.py",
+    "sha256": "bd0204fe2be5c588f4f37118c9de034a2279907563eaf1b5da12f1794b38adc1"
+  },
+  {
+    "source": "src/entrega_mapas_package/entrega_mapas_package/coppelia_interface_node.py",
+    "sha256": "92797589a923d3681917a604615d3d533ac4c8275a9a0e69812c685c798f56fb"
+  }
+]

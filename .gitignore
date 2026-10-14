@@ -1,0 +1,11 @@
+.env
+.env.*
+__pycache__/
+.venv/
+build/
+install/
+log/
+.DS_Store
+*.egg-info/
+map_simple.png
+map_trapped.png
