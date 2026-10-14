@@ -1,18 +1,43 @@
-# ROS2 Navigation
+# RoboNav
 
-Occupancy mapping and navigation in CoppeliaSim, developed for MSc Autonomous
-Robots coursework (2025). Samuel García confirms implementation in a group
-context. This is mapping with supplied simulator pose, **not full SLAM**.
+[![CI](https://github.com/samugc/RoboNav/actions/workflows/ci.yml/badge.svg)](https://github.com/samugc/RoboNav/actions/workflows/ci.yml)
+
+A ROS 2 robotics project combining **occupancy-grid mapping, reactive navigation and global path planning** in CoppeliaSim.
+
+Originally developed for MSc Autonomous Robots coursework and later cleaned to isolate the planning core, improve configuration and add reproducible offline tests.
 
 ## System
-CoppeliaSim interface → pose/range topics → log-odds occupancy mapper → OccupancyGrid.
-Bug2 and a goal manager provide reactive navigation. Separate offline grid
-planners explore Theta-style any-angle search, Dijkstra and RRT.
-The historical `a_star_node` name is retained for compatibility; its parent
-relaxation includes line-of-sight and is not plain A*.
 
-## Small reproducible experiment
-Python 3.11 recommended; from the repository root:
+```text
+CoppeliaSim
+   ↓ pose + range data
+ROS 2 interface
+   ↓
+log-odds occupancy mapper
+   ↓
+OccupancyGrid
+   ├── Bug2 reactive navigation
+   ├── Theta-style grid planning
+   ├── Dijkstra
+   └── RRT
+```
+
+The mapper uses Bresenham ray tracing to update free and occupied cells in log-odds form. Robot pose is supplied by the simulator, so this is **mapping with known pose**, not full SLAM.
+
+## What is implemented
+
+- ROS 2 interface to CoppeliaSim.
+- Log-odds occupancy mapping.
+- Bresenham free-space/ray updates.
+- ROS `OccupancyGrid` publication.
+- Bug2 reactive navigation and goal management.
+- Theta-style any-angle grid planning.
+- Dijkstra and RRT planners.
+- Docker-based ROS 2 Humble environment.
+- Offline planner extraction for tests without a simulator.
+
+## Offline demo
+
 ```bash
 python -m venv .venv
 source .venv/bin/activate
@@ -20,40 +45,49 @@ pip install -r requirements-offline.txt
 python -m unittest discover -s tests -v
 python scripts/planning_demo.py
 ```
-This synthetic grid exercise runs the extracted original planner without ROS.
-It reports a path, path length in cells and queue pops, not a navigation success
-rate. Tests cover reachability, blocked maps, invalid endpoints and visibility.
 
-## ROS2 / simulator workflow
-Docker uses ROS2 Humble. Install CoppeliaSim separately and open the original
-course scene (`mapa_practica2.ttt`), using Pioneer_p3dx and its range sensors.
-The scene is not redistributed. Enable the ZMQ remote API on port 23000.
+The demo runs the planning core on a synthetic grid and reports path length and queue pops.
+
+## Simulator workflow
+
 ```bash
 docker compose up --build
 ```
-The host defaults to `host.docker.internal`; on native ROS pass
-`sim_host:=localhost` to `ros2 launch entrega_mapas_package navigation.launch.py`.
-The image builds the package; maps are mounted at `/ros2_ws/maps`.
-Full simulator integration has not been rerun during this cleanup. The scene,
-object naming and simulator version remain integration prerequisites.
 
-## Historical evidence
-`evidence/` retains two original planning outputs and hashes of the source files.
-These are qualitative examples, not measured collision-free navigation claims.
-![Historical Theta-style plan](evidence/astar_result_Scenario_2_Maze01.png)
+The original course scene is not redistributed. CoppeliaSim must expose the ZMQ remote API and the expected robot/sensor objects must exist in the loaded scene.
 
-## 2026 cleanup and limitations
-Extracted the planning core for direct tests; corrected invalid-input returns;
-parameterized a hard-coded simulator address; removed environment files, caches,
-unused OpenAI and optional SLAM dependencies. See `PROVENANCE.md`.
-Grid planning assumes a point robot and may pass diagonal corners; no footprint
-inflation or physical safety guarantee is claimed. The mapper uses known pose.
-Runtime dependencies are not a frozen reproduction of the original environment.
+## Example
 
-## Interview review
-Explain log-odds saturation, Bresenham ray updates, unknown cells, ROS message
-frames, Bug2 termination assumptions, A* versus Theta*, and why a grid route does
-not itself prove safe control of a finite-size robot. Review the AI-assisted
-2026 extraction and launch changes before claiming mastery of the cleaned code.
+![Historical path-planning result](evidence/astar_result_Scenario_2_Maze01.png)
 
-Executed checks and limits: [VALIDATION.md](VALIDATION.md).
+Historical figures are qualitative evidence only; they are not navigation-success benchmarks.
+
+## Repository structure
+
+```text
+src/                 ROS 2 package and navigation nodes
+scripts/             offline planning demo
+maps/                small example maps
+tests/               planner tests
+evidence/            historical outputs and source manifest
+PROVENANCE.md        source/cleanup notes
+VALIDATION.md        executed checks and limits
+```
+
+## Engineering improvements
+
+- extracted the planning core for direct tests;
+- removed unused environment files and caches;
+- parameterised the simulator address;
+- corrected invalid-input handling;
+- removed unused optional dependencies.
+
+## Limitations
+
+- Full CoppeliaSim integration has not been rerun in the cleaned environment.
+- Global planning assumes a point robot and does not perform footprint inflation.
+- A valid grid route does not itself guarantee collision-free physical control.
+- Mapping relies on externally supplied pose and is not a complete SLAM system.
+- Historical figures are not quantitative benchmarks.
+
+See [`VALIDATION.md`](VALIDATION.md) and [`PROVENANCE.md`](PROVENANCE.md).
